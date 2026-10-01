@@ -1,5 +1,5 @@
 import { consultarCalles } from "./overpass.js";
-import { calcularAnclaYTamano, pixelMundoALonLat } from "./projection.js";
+import { calcularAnclaYTamano } from "./projection.js";
 import { seleccionExcedeLimite, LADO_MAXIMO_PX, AREA_MAXIMA_PX } from "./limites.js";
 import { ESTILOS } from "./styles.js";
 import { renderizarEstilo, contarPixelesPintados } from "./render.js";
@@ -78,7 +78,6 @@ function actualizarInfoSeleccion(latlngActual) {
 
 let viasActuales = null;
 let geometriaActual = null; // { anclaPixelMundo, anchoPx, altoPx, zoom }
-let anclaLonLat = null; // { lat, lon } de la esquina superior izquierda, ya snappeada
 
 const selectorEstilo = document.getElementById("selectorEstilo");
 const checkFondo = document.getElementById("checkFondo");
@@ -87,6 +86,12 @@ const statusEl = document.getElementById("status");
 const statsEl = document.getElementById("stats");
 const btnDescargarWplace = document.getElementById("btnDescargarWplace");
 const btnDescargarPng = document.getElementById("btnDescargarPng");
+const inputNombreArchivo = document.getElementById("nombreArchivo");
+
+function nombreArchivoActual() {
+  const escrito = inputNombreArchivo.value.trim();
+  return escrito || `wplacecity-${selectorEstilo.value}`;
+}
 
 function setStatus(texto, esError = false) {
   statusEl.textContent = texto;
@@ -113,12 +118,6 @@ async function consultarYPrevisualizar() {
     }
 
     viasActuales = await consultarCalles(bboxSeleccionado);
-    const [lonAncla, latAncla] = pixelMundoALonLat(
-      geometriaActual.anclaPixelMundo[0],
-      geometriaActual.anclaPixelMundo[1],
-      geometriaActual.zoom
-    );
-    anclaLonLat = { lat: latAncla, lon: lonAncla };
 
     setStatus(`${viasActuales.length} vías encontradas.`);
     renderizarPreview();
@@ -158,13 +157,14 @@ btnDescargarPng.addEventListener("click", () => {
   if (!canvas) return;
   const a = document.createElement("a");
   a.href = canvas.toDataURL("image/png");
-  a.download = `wplacecity-${selectorEstilo.value}.png`;
+  a.download = `${nombreArchivoActual()}.png`;
   a.click();
 });
 
 btnDescargarWplace.addEventListener("click", () => {
   const canvas = previewCanvasWrap.querySelector("canvas");
-  if (!canvas || !anclaLonLat) return;
-  const contenido = construirArchivoWplace(canvas, anclaLonLat, `wplacecity-${selectorEstilo.value}`);
-  descargarArchivoWplace(contenido, `wplacecity-${selectorEstilo.value}`);
+  if (!canvas || !geometriaActual) return;
+  const nombre = nombreArchivoActual();
+  const contenido = construirArchivoWplace(canvas, geometriaActual.anclaPixelMundo, nombre);
+  descargarArchivoWplace(contenido, nombre);
 });
