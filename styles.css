@@ -162,6 +162,12 @@ select {
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}
+
+select option {
+  color: var(--text);
+  background: #1c1033;
 }
 
 .check-fondo {
