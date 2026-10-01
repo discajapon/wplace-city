@@ -12,7 +12,13 @@
 // tanto, WPLACE_ZOOM_HIPOTESIS es un valor de prueba fácil de cambiar.
 
 export const TILE_SIZE_WPLACE = 1000; // px por tile, según lo descrito por el usuario
-export const WPLACE_ZOOM_HIPOTESIS = 10; // TODO: verificar con muestra real
+
+// TODO: verificar con muestra real. En zoom 10 (valor anterior) cada píxel
+// cubre ~39 m reales, lo que hace que calles cercanas caigan en el mismo
+// puñado de píxeles y se vean como manchones gruesos en vez de líneas finas.
+// Wplace permite pintar detalle a escala de vereda/edificio, así que subimos
+// la hipótesis a zoom 18 (~0.15 m/px), mucho más cerca de esa resolución.
+export const WPLACE_ZOOM_HIPOTESIS = 18;
 
 const RAD = Math.PI / 180;
 
