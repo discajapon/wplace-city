@@ -64,21 +64,30 @@ src/
 
 ## Limitaciones conocidas (estado real del proyecto)
 
-- **El exportador `.wplace` es PROVISIONAL.** No existe especificación
-  pública oficial del formato. `src/exporter.js` genera un archivo de texto
-  con una estructura razonable (imagen PNG en base64 + id, nombre, tamaño,
-  opacidad, lat/lon), pero **no está confirmado que Wplace lo acepte o lo
-  posicione correctamente.** Falta contrastarlo con una muestra real: un
-  overlay mínimo de 3×3 px exportado desde Wplace en un punto conocido.
-- **La proyección y el snap a la cuadrícula de Wplace son una hipótesis.**
-  `src/projection.js` asume Web Mercator estándar con tiles de 1000×1000 px
-  (en vez de los 256×256 habituales de OSM), a un nivel de zoom fijo que
-  todavía hay que verificar. Hasta no contrastarlo con una muestra real, no
-  hay garantía de que la plantilla caiga alineada píxel a píxel.
-- **La paleta de colores de Wplace no está verificada.** Los valores en
-  `src/palette.js` son placeholders (marcados `TODO: verificar`): no se
-  encontró una fuente oficial confiable con los colores exactos de la
-  paleta gratuita de Wplace.
+- **El exportador `.wplace` sigue siendo PROVISIONAL**, aunque ya no es una
+  estructura inventada. No existe especificación pública oficial de Wplace
+  para este archivo; lo único con control de versión real que se pudo
+  verificar contra código fuente (no contra un blog ni una suposición) es el
+  esquema JSON de la herramienta [Blue Marble](https://github.com/SwingTheVine/Wplace-BlueMarble)
+  (`schemaVersion`, `whoami: "BlueMarble"`, tiles en base64 recortados por
+  tile de 1000×1000). `src/exporter.js` ahora genera ese esquema, porque es
+  el que produce justamente el error *"Template version X is unsupported"*
+  que se reportó al importar. **Si la herramienta usada para importar no es
+  Blue Marble, esto no va a funcionar**: hace falta el nombre de esa
+  herramienta/botón, o un archivo real exportado desde ahí, para ajustar el
+  exportador a su formato real.
+- **La proyección y el snap a la cuadrícula de Wplace siguen siendo una
+  hipótesis**, aunque se corrigió un error grueso: el zoom inicial (10) hacía
+  que cada píxel cubriera ~39 m reales, por lo que calles cercanas caían
+  en los mismos píxeles y se veían como manchones anchos en vez de líneas
+  finas. Ahora usa zoom 18 (~0.15 m/px), mucho más cerca de la resolución a
+  la que Wplace permite pintar. Sigue sin confirmarse contra una muestra
+  real (overlay mínimo de 3×3 px exportado desde Wplace en un punto
+  conocido), así que no hay garantía de alineación píxel a píxel.
+- **La paleta de colores sí está verificada**: `src/palette.js` usa los 31
+  colores gratuitos oficiales de Wplace (id, nombre y RGB), contrastados de
+  forma independiente contra el código fuente de Blue Marble y de Wplace
+  Overlay Pro (dos proyectos separados que coinciden exactamente).
 - Solo dibuja calles. No hay agua, edificios, bosques ni etiquetas.
 - Pensado para uso esporádico y de bajo tráfico (un grupo chico). No tiene
   caché ni servidor propio para Overpass/teselas.
