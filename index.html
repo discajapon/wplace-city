@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>wplacecity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <h1>wplacecity</h1>
+      <p>Generador de plantillas de calles para Wplace, a partir de datos de OpenStreetMap.</p>
+    </section>
+
+    <article class="card">
+      <h2>① selecciona una zona</h2>
+      <p class="hint">Mové y hacé zoom al mapa, después mantené <strong>shift</strong> y arrastrá para dibujar el rectángulo.</p>
+      <div id="mapa"></div>
+      <p id="infoSeleccion" class="info-seleccion">Selección: — × — px</p>
+      <p id="avisoLimite" class="aviso" style="display:none;">La selección es demasiado grande, achicala.</p>
+      <button id="btnConsultar" type="button" disabled>consultar calles</button>
+    </article>
+
+    <article class="card">
+      <h2>② estilo</h2>
+      <div class="controles-estilo">
+        <select id="selectorEstilo">
+          <option value="turquesa">Turquesa</option>
+          <option value="gris">Gris</option>
+          <option value="rural">Rural</option>
+          <option value="natural">Natural</option>
+        </select>
+        <label class="check-fondo">
+          <input type="checkbox" id="checkFondo">
+          incluir fondo
+        </label>
+      </div>
+      <p class="form-status" id="status" role="status" aria-live="polite"></p>
+      <div id="previewWrap" class="preview-wrap"></div>
+      <p id="stats" class="stats"></p>
+      <div class="botones-descarga">
+        <button id="btnDescargarWplace" type="button" disabled>descargar .wplace</button>
+        <button id="btnDescargarPng" type="button" disabled>descargar .png</button>
+      </div>
+    </article>
+
+    <p class="footer-note">
+      Datos de calles: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">colaboradores de OpenStreetMap</a> (ODbL).
+      Este sitio no se conecta a Wplace de ninguna forma. · disca_japon
+    </p>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
