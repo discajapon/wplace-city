@@ -91,6 +91,8 @@ src/
 - Solo dibuja calles. No hay agua, edificios, bosques ni etiquetas.
 - Pensado para uso esporádico y de bajo tráfico (un grupo chico). No tiene
   caché ni servidor propio para Overpass/teselas.
+  DE NADA GUNIXX
+
 
 ## Atribución
 
