@@ -102,3 +102,4 @@ disponibles bajo licencia [ODbL](https://opendatacommons.org/licenses/odbl/).
 ## Licencia
 
 [GPL-3.0](LICENSE)
+(btw si eres gunix usala para lo que quieras)
